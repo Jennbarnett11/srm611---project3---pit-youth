@@ -171,8 +171,6 @@ ggplot(pit_model, aes(x = pct_us_other, y = youth_share)) +
        y = "% of unaccompanied youth unsheltered") +
   theme_minimal()
 
-
-
 # BASELINE POISSON MODEL ####
 
 # Response: youth_us (count of unsheltered unaccompanied youth)
@@ -231,3 +229,13 @@ plot(fitted(m_pois), residuals(m_pois, type = "pearson"),
      main = "Poisson model: Pearson residuals vs. fitted")
 abline(h = 0, lty = 2)
 
+# NEGATIVE BINOMIAL MODEL ####
+
+m_nb <- MASS::glm.nb(youth_us ~ pct_us_other + offset(log(youth_tot)),
+                     data = pit_model)
+summary(m_nb)
+  #   Model comparison: AIC (lower)
+AIC(m_pois, m_nb)
+  # Results:
+  # M_pois 984.26
+  # m_nb    481.40
